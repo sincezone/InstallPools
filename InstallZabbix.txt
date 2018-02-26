@@ -1,0 +1,45 @@
+1. Install Nginx(1.12.2)
+	Source code in url:
+
+	Please upload <nginx-1.12.2.tar.gz> on your Linux OS workplace.
+	Install	Setp:
+		mkdir -p /application/{app,soft,backup}
+		yum install pcre*  openssl* -y
+		tar xvf nginx-1.12.2.tar.gz -C /application/app/
+		cd /application/app/nginx-1.12.2
+		./configure --prefix=/usr/local/nginx --with-http_ssl_module --with-http_v2_module --with-http_stub_status_module --with-pcre
+		make && make install
+
+	Start/Stop/Reload/Check Nginx:
+		Start:	/usr/local/nginx/sbin/nginx
+		Stop:	/usr/local/nginx/sbin/nginx -s stop
+		Reload:	/usr/local/nginx/sbin/nginx -s reload
+		Check:	/usr/local/nginx/sbin/nginx -t
+
+2. Install MySQL(5.5.49)
+	Source code in url:
+
+	Please upload <mysql-5.5.49-linux2.6-x86_64.tar.gz> on your Linux OS workplace.
+	Install	Setp:
+		yum install –y autoconf automake imake libxml2-devel expat-devel cmake gcc gcc-c++ libaio libaio-devel bzr bison libtool ncurses5-devel
+		useradd mysql -M -s /sbin/nologin
+		tar xvf mysql-5.5.49-linux2.6-x86_64.tar.gz -C /usr/local/
+		mv /usr/local/mysql-5.5.49-linux2.6-x86_64 /usr/local/mysql
+		cp /usr/local/mysql/support-files/my-large.cnf /etc/my.cnf
+		cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysql
+		chown mysql.mysql /usr/local/mysql/ -R
+		/usr/local/mysql/scripts/mysql_install_db --user=mysql --datadir=/usr/local/mysql/data/  --basedir=/usr/local/mysql  --defaults-file=/etc/my.cnf
+		/etc/init.d/mysql restart
+		echo "export PATH=/usr/local/mysql/bin:$PATH" >>/etc/profile
+		source /etc/profile
+
+3. Install PHP(5.6.30)
+	Source code in url:
+	Source code in url:
+
+	Please upload <php-5.6.30.tar.bz2> and <libiconv-1.14.tar.gz> on your Linux OS workplace.
+	Install	Setp:
+		yum install -y epel-release zlib-devel libxml2-devel libjpeg-turbo-devel freetype-devel libpng-devel gd-devel libcurl-devel libxslt-devel mcrypt libmcrypt-devel mhash  openssl-devel
+		yum install -y libmcrypt-devel
+
+
