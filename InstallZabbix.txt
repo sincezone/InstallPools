@@ -39,6 +39,7 @@
 
 	Please upload <php-5.6.30.tar.bz2> and <libiconv-1.14.tar.gz> on your Linux OS workplace.
 	Install	Setp:
+		useradd  www -s /sbin/nologin
 		yum install -y epel-release
 		yum install -y libmcrypt-devel zlib-devel libxm12-devel libjpeg-devel libjepg-turbo-devel libconv-devel freetype-devel libpng-devel gd-devel libcurl-devel libxslt-devel libmcrypt libmcrypt-devel
 		tar xvf libiconv-1.14.tar.gz
@@ -50,12 +51,55 @@
 		cd  app/php-5.6.30
 		./configure --prefix=/usr/local/php/ --with-mysql=mysqlnd --with-config-file-path=/usr/local/php/etc --with-pdo-mysql=mysqlnd --with-iconv-dir=/usr/local/libiconv --with-gettext --with-mysqli --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --with-curl --enable-mbregex --enable-fpm --enable-mbstring --with-mcrypt --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-pcntl --enable-sockets --with-xmlrpc --enable-soap --enable-short-tags --enable-static --with-xsl --with-fpm-user=www --with-fpm-group=www --enable-ftp --enable-opcache=no
 		make  && make install
-		cp php.ini-production /usr/local/php/etc/
+		cp php.ini-production /usr/local/php/etc/php.ini
 		cp /usr/local/php/etc/php-fpm.conf.default /usr/local/php/etc/php-fpm.conf
 		
-		If you want execute /etc/init.d/php-fpm scripts,and you can see 
+		If you want execute /etc/init.d/php-fpm scripts,and you can see https://github.com/sincezone/InstallPools/blob/master/php-fpm.s
+		And you have to execute the following commands:
+		chmod 755 /etc/init.d/php-fpm
+		chkconfig --add php-fpm
+		chkconfig php-fpm on
 
+		Start/Stop/Reload PHP:
+		Start:	/usr/local/php/sbin/php-fpm
+		Stop:	kill -INT `cat /usr/local/php/var/run/php-fpm.pid`
+		Reload:	kill -USR2 `cat /usr/local/php/var/run/php-fpm.pid`
 
+4. Install Zabbix(3.4.7)
+	Source code in url:
+
+	Please upload <zabbix-3.4.7.tar.gz> on your Linux OS workplace.
+	$ZABBIX_PATH is your zabbix source unzip path.
+
+	Install	Setp:
+		useradd zabbix -s /sbin/nologin
+		yum -y install fping libevent-devel net-snmp-devel curl-devel unixODBC-devel openssl-devel  OpenIPMI-devel java-devel
+		tar xvf zabbix-3.4.7.tar.gz
+		cd zabbix-3.4.7 
+		./configure --prefix=/usr/local/zabbix --enable-server --enable-agent --enable-java --enable-ipv6 --with-mysql  --with-net-snmp --with-libcurl --with-libxml2 --with-openipmi --with-unixodbc --with-openssl
+		make install
+
+5. Config Zabbix
+	Access to the database and execute commands.
+	Create zabbix db:
+		create database zabbix character set utf8 collate utf8_bin;
+		grant all on zabbix.* to zabbix@'localhost' identified by 'zabbix';
+		flush privileges;
+	Import zbbix sql:
+		use zabbix;
+		source $ZABBIX_PATH/database/mysql/schema.sql
+		source $ZABBIX_PATH/database/mysql/images.sql
+		source $ZABBIX_PATH/database/mysql/data.sql
+
+6. Config Nginx conf
+	mkdir -p /usr/local/nginx/html/zabbix
+	cp -arp $ZABBIX_PATH/frontends/php/* /usr/local/nginx/html/zabbix
+	chown -R www.www /usr/local/nginx/html/zabbix/
+	sed -i 's#max_execution_time = 30#max_execution_time = 300#;s#max_input_time = 60#max_input_time = 300#;s#post_max_size = 8M#post_max_size = 16M#;910a date.timezone = Asia/Shanghai' /usr/local/php/etc/php.ini
+	/etc/init.d/php-fpm restart
+
+	Zabbix's nginx confile,you can see 
+	Change the configuration as you wish.
 
 
 
