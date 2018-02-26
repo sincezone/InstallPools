@@ -39,7 +39,23 @@
 
 	Please upload <php-5.6.30.tar.bz2> and <libiconv-1.14.tar.gz> on your Linux OS workplace.
 	Install	Setp:
-		yum install -y epel-release zlib-devel libxml2-devel libjpeg-turbo-devel freetype-devel libpng-devel gd-devel libcurl-devel libxslt-devel mcrypt libmcrypt-devel mhash  openssl-devel
-		yum install -y libmcrypt-devel
+		yum install -y epel-release
+		yum install -y libmcrypt-devel zlib-devel libxm12-devel libjpeg-devel libjepg-turbo-devel libconv-devel freetype-devel libpng-devel gd-devel libcurl-devel libxslt-devel libmcrypt libmcrypt-devel
+		tar xvf libiconv-1.14.tar.gz
+		cd libiconv-1.14
+		./configure --prefix=/usr/local/libiconv
+		make && make install
+
+		tar  xvf  php-5.6.30.tar.bz2
+		cd  app/php-5.6.30
+		./configure --prefix=/usr/local/php/ --with-mysql=mysqlnd --with-config-file-path=/usr/local/php/etc --with-pdo-mysql=mysqlnd --with-iconv-dir=/usr/local/libiconv --with-gettext --with-mysqli --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --with-curl --enable-mbregex --enable-fpm --enable-mbstring --with-mcrypt --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-pcntl --enable-sockets --with-xmlrpc --enable-soap --enable-short-tags --enable-static --with-xsl --with-fpm-user=www --with-fpm-group=www --enable-ftp --enable-opcache=no
+		make  && make install
+		cp php.ini-production /usr/local/php/etc/
+		cp /usr/local/php/etc/php-fpm.conf.default /usr/local/php/etc/php-fpm.conf
+		
+		If you want execute /etc/init.d/php-fpm scripts,and you can see 
+
+
+
 
 
