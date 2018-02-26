@@ -92,14 +92,29 @@
 		source $ZABBIX_PATH/database/mysql/data.sql
 
 6. Config Nginx conf
+	Zabbix's nginx confile,you can see https://github.com/sincezone/InstallPools/blob/master/zabbix_nginx.conf
+	Change the configuration as you wish.
+
 	mkdir -p /usr/local/nginx/html/zabbix
 	cp -arp $ZABBIX_PATH/frontends/php/* /usr/local/nginx/html/zabbix
 	chown -R www.www /usr/local/nginx/html/zabbix/
-	sed -i 's#max_execution_time = 30#max_execution_time = 300#;s#max_input_time = 60#max_input_time = 300#;s#post_max_size = 8M#post_max_size = 16M#;910a date.timezone = Asia/Shanghai' /usr/local/php/etc/php.ini
-	/etc/init.d/php-fpm restart
 
-	Zabbix's nginx confile,you can see 
-	Change the configuration as you wish.
+	open php.ini,modify the following parameters for the following values.
+
+	max_execution_time = 300
+	memory_limit = 128M
+	post_max_size = 16M
+	upload_max_filesize = 2M
+	max_input_time = 300
+	date.timezone = PRC
+
+
+	/etc/init.d/php-fpm restart
+	/usr/local/nginx/sbin/nginx -s reload
+
+7. Config Web
+	Input in the browser zabbix's system $IP/zabbix/setup.php.
+	eg: http://172.16.100.9/zabbix/setup.php
 
 
 
