@@ -16,9 +16,10 @@ exec_prefix=${prefix}
 php_fpm_BIN=${exec_prefix}/sbin/php-fpm
 php_fpm_CONF=${prefix}/etc/php-fpm.conf
 php_fpm_PID=${prefix}/var/run/php-fpm.pid
+php_fpm_INI=${prefix}/etc/php.ini
 
 
-php_opts="--fpm-config $php_fpm_CONF --pid $php_fpm_PID"
+php_opts="--fpm-config $php_fpm_CONF --pid $php_fpm_PID -c $php_fpm_INI"
 
 
 wait_for_pid () {
